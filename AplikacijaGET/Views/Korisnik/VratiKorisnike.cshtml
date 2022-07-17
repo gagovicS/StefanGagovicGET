@@ -1,0 +1,64 @@
+﻿@model IEnumerable<AplikacijaGET.Models.Korisnik>
+
+@{
+    ViewBag.Title = "VratiKorisnike";
+    if (Session["uloga"] == null) { Response.Redirect("~/Home/Index", false); }
+    else { if (!Session["uloga"].ToString().Equals("0")) { Response.Redirect("~/Home/Index", false); } }
+}
+
+<h2>Korisnici</h2>
+
+<p>
+    @Html.ActionLink("Dodaj Novog Korisnika", "Create",null, new { @class = "btn btn-primary" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.KorisnickoIme)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sifra)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Prezime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Uloga)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.KorisnickoIme)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sifra)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prezime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Uloga)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { id = item.KorisnikID  }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,222 @@
+﻿@model IEnumerable<AplikacijaGET.Models.Let>
+
+@{
+    ViewBag.Title = "VratiLetove";
+    if (Session["uloga"] == null) { Response.Redirect("~/Home/Index", false); }
+}
+
+<h2>Letovi</h2>
+
+@using (Html.BeginForm("VratiFiltrirane", "Let"))
+{
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MestoPolaska)
+            <select name="Polazak" onchange="getselectedValue();" id="MestoPolaska" asp-for="MestoPolaska" class="form-control">
+                <option value="Beograd">Beograd</option>
+                <option value="Nis">Nis</option>
+                <option value="Kraljevo">Kraljevo</option>
+                <option value="Pristina">Pristina</option>
+            </select>
+
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MestoDolaska)
+            <select name="Dolazak" id="MestoDolaska" onchange="getselectedValue();" asp-for="MestoDolaska" class="form-control">
+                <option value="Beograd">Beograd</option>
+                <option value="Nis">Nis</option>
+                <option value="Kraljevo">Kraljevo</option>
+                <option value="Pristina">Pristina</option>
+            </select>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BrojPresedanja)
+            <select name="Presedanje" id="presedanje" asp-for="BrojPresedanja" class="form-control">
+                <option value="Bez Presedanja">Bez Presedanja  </option>
+                <option value="Sa presedanjima">Sa presedanjima</option>
+
+            </select>
+        </th>
+        <th>
+            <p> </p>
+            <p> </p>
+            <input type="submit" value="Filtriraj" class="btn-primary btn-lg">
+        </th>
+
+    </tr>
+</table>
+        }
+
+
+        @if (Session["Uloga"] != null && Session["uloga"].ToString().Equals("1"))
+        {
+            @Html.ActionLink("Unesi novi let", "Create", null, new { @class = "btn btn-primary" })
+        }
+
+
+
+        @Html.AntiForgeryToken()
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.MestoPolaska)
+
+                </th>
+
+
+                <th>
+                    @Html.DisplayNameFor(model => model.MestoDolaska)
+                </th>
+                <th>
+
+                    @Html.DisplayNameFor(model => model.DatumLeta)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BrojPresedanja)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.BrojMestaNaLetu)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BrojPraznih)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Stanje)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cena)
+                </th>
+                <th>
+
+
+
+
+                </th>
+            </tr>
+
+
+            @foreach (var item in Model)
+            {
+
+                if (Session["uloga"] != null && item.BrojPraznih < 5 && Session["uloga"].ToString().Equals("1") )
+                {
+
+                    <tr bgcolor=" #ffffcc">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MestoPolaska)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MestoDolaska)
+                        </td>
+                        <td>
+                            @item.DatumLeta.ToString("d")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BrojPresedanja)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BrojMestaNaLetu)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BrojPraznih)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Stanje)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cena)
+                        </td>
+                        <td>
+                            @if (Session["uloga"] == null) { Response.Redirect("~/Home/Index", false); }
+                            else
+                            {
+                                if (Session["uloga"].ToString().Equals("0"))
+                                {@Html.ActionLink("Edit   ", "Edit", new { id = item.LetID }) ;
+                                @Html.ActionLink("Delete", "Delete", new { id = item.LetID });
+                                }
+                            }
+
+                            @if (Session["uloga"] == null) { Response.Redirect("~/Home/Index", false); }
+                            else
+                            {
+                                if (Session["uloga"].ToString().Equals("2")&& (item.DatumLeta.Year > System.DateTime.Now.Year||
+                                    (item.DatumLeta.Year == System.DateTime.Now.Year &&
+                                     item.DatumLeta.Month > System.DateTime.Now.Month||(
+                                     item.DatumLeta.Year == System.DateTime.Now.Year &&
+                                     item.DatumLeta.Month == System.DateTime.Now.Month &&
+                                        item.DatumLeta.Day > (System.DateTime.Now.Day+2)))))
+                                {
+                                @Html.ActionLink("Rezervisi", "Rezervisi", new { id = item.LetID });
+                                }
+                            }
+
+                           
+                        </td>
+
+                    </tr>
+                }
+                else
+                {
+
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MestoPolaska)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MestoDolaska)
+                        </td>
+                        <td>
+                            @item.DatumLeta.ToString("d")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BrojPresedanja)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BrojMestaNaLetu)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BrojPraznih)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Stanje)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cena)
+                        </td>
+                        <td>
+                            @if (Session["uloga"] == null) { Response.Redirect("~/Home/Index", false); }
+                            else
+                            {
+                                if (Session["uloga"].ToString().Equals("0"))
+                                {@Html.ActionLink("Edit   ", "Edit", new { id = item.LetID }, new { @class = "btn btn-primary" });
+
+                                @Html.ActionLink("Delete", "Delete", new { id = item.LetID }, new { @class = "btn btn-danger" });
+                            }
+                        }
+                            @if (Session["uloga"] == null) { Response.Redirect("~/Home/Index", false); }
+                            else
+                            {
+                                if (Session["uloga"].ToString().Equals("2")&& (item.DatumLeta.Year > System.DateTime.Now.Year ||
+                                    (item.DatumLeta.Year == System.DateTime.Now.Year &&
+                                     item.DatumLeta.Month > System.DateTime.Now.Month || (
+                                     item.DatumLeta.Year == System.DateTime.Now.Year &&
+                                     item.DatumLeta.Month == System.DateTime.Now.Month &&
+                                        item.DatumLeta.Day > (System.DateTime.Now.Day + 2)))))
+                                {
+                                @Html.ActionLink("Rezervisi", "Rezervisi", new { id = item.LetID }, new { @class = "btn btn-success" });
+                                }
+                            }
+
+
+
+                        </td>
+                    </tr>
+                }
+            }
+
+        </table>
+
+

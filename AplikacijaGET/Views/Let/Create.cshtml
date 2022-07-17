@@ -1,0 +1,127 @@
+﻿@model AplikacijaGET.Models.Let
+
+@{
+    ViewBag.Title = "Create";
+    if (Session["uloga"] == null) { Response.Redirect("~/Home/Index",false); }else {
+        if (!Session["uloga"].ToString().Equals("1")) { Response.Redirect("~/Home/Index", false); } }
+}
+
+<h2>Unos novih letova</h2>
+
+@using (Html.BeginForm("Create","Let")) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Novi let</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.MestoPolaska, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(
+                model => model.MestoPolaska,
+                new SelectList(
+                new List<Object>
+                    {
+                    new { value = "Beograd" , text = "Beograd"  },
+                    new { value = "Nis" , text = "Nis" },
+                    new { value = "Pristina" , text = "Pristina" },
+                    new { value = "Kraljevo" , text = "Kraljevo"}
+                    },
+                    "value",
+                    "text",
+                    Model.MestoPolaska
+                    ), new { @class = "form-control" }
+                    )
+                    @Html.ValidationMessageFor(model => model.MestoPolaska, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.MestoDolaska, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(
+                model => model.MestoDolaska,
+                new SelectList(
+                new List<Object>
+                    {
+                    new { value = "Beograd" , text = "Beograd"  },
+                    new { value = "Nis" , text = "Nis" },
+                    new { value = "Pristina" , text = "Pristina" },
+                    new { value = "Kraljevo" , text = "Kraljevo"}
+                    },
+                    "value",
+                    "text",
+                    Model.MestoDolaska
+                    ), new { @class = "form-control" }
+                    )
+                @Html.ValidationMessageFor(model => model.MestoDolaska, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        
+        <div class="form-group">
+
+            @Html.LabelFor(model => model.DatumLeta, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DatumLeta, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DatumLeta, "", new { @class = "text-danger" })
+               
+            </div>            
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BrojPresedanja, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BrojPresedanja, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BrojPresedanja, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BrojMestaNaLetu, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BrojMestaNaLetu, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BrojMestaNaLetu, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BrojPraznih, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BrojPraznih, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BrojPraznih, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Stanje, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.Stanje)
+                    @Html.ValidationMessageFor(model => model.Stanje, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Cena, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Cena, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Cena, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.HiddenFor( m=> m.LetID )
+                <input type="submit" value="Sacuvaj" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Vrati se na listu", "VratiLetove",null,new { @class = "btn btn-success" })
+</div>

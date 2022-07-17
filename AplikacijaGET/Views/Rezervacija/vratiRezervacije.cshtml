@@ -1,0 +1,95 @@
+﻿@model IEnumerable<AplikacijaGET.Models.LetRezervacija>
+
+@{
+    ViewBag.Title = "vratiRezervacije";
+}
+@if (Session["uloga"] == null) { Response.Redirect("~/Home/Index", false); }
+
+<h2>Rezervacije</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MestoPolaska)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MestoDolaska)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DatumLeta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BrojPresedanja)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BrojPraznih)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Stanje)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cena)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Korisnik)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatusRezervacije)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BrojRezervisanihMesta)
+        </th>
+        <th></th>
+    </tr>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.MestoPolaska)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.MestoDolaska)
+    </td>
+    <td>
+        @item.DatumLeta.ToString("d")
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.BrojPresedanja)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.BrojPraznih)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Stanje)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Cena)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Korisnik)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.StatusRezervacije)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.BrojRezervisanihMesta)
+    </td>
+
+    @if (Session["Uloga"] != null && Session["uloga"].ToString().Equals("1"))
+    {
+        <td>
+            @Html.ActionLink("Promeni status rezervacije", "Edit", new { id=item.RezervacijaID, status=item.StatusRezervacije,let=item.LetID,brojMesta=item.BrojRezervisanihMesta,prazna=item.BrojPraznih }, new { @class = "btn btn-primary" })
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Delete", new { id = item.RezervacijaID, let = item.LetID, brojMesta = item.BrojRezervisanihMesta, prazna = item.BrojPraznih }, new { @class = "btn btn-danger" })
+        </td>
+            }
+
+    </tr>
+        }
+    }
+
+</table>
